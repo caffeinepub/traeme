@@ -1,0 +1,136 @@
+{
+  "kind": "build_request",
+  "title": "Expand role dashboards with live widgets and driver trip controls",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-15",
+      "text": "Update the Parent dashboard to include embedded, at-a-glance widgets (not just navigation cards): (1) a compact live vehicle location view with a clear link to the full Tracking screen, (2) a notifications preview showing the most recent alerts for the parent’s assigned route/vehicle (when available) with a link to the full Alerts screen, (3) a pickup/drop-off status preview showing the most recent pickup/drop-off records relevant to the logged-in parent context (fallback: show the latest records available to the caller) with a link to the Pickup & Drop-off screen, and (4) an assigned route summary that shows the assigned route name/stops when the profile has an assignedRoute.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Yes, expand the dashboards for each role:\n\nParent Dashboard:\n- View real-time bus location on map\n- Notifications for bus arrival or delays\n- Student pickup and drop-off status\n- Assigned route information"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Parent dashboard shows a live-updating vehicle location widget (updates as vehicle locations are polled) and includes a visible link/button that navigates to /tracking.",
+        "Parent dashboard shows a list preview of the most recent alerts (at least the latest 3) and includes a link/button to /alerts.",
+        "Parent dashboard shows a pickup/drop-off preview (at least the latest 3 records accessible to the caller) and includes a link/button to /pickup-dropoff.",
+        "If the logged-in user profile has assignedRoute set, the Parent dashboard displays the route name and stop list; if not assigned, it displays an English empty-state message indicating no route is assigned."
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "Update the Student dashboard to include embedded widgets for (1) live vehicle location, (2) estimated arrival time (ETA) summary, and (3) assigned route summary. The ETA must be displayed in English and must gracefully handle missing data (e.g., show “ETA not available” when it cannot be computed from available trip/vehicle updates).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Student Dashboard:\n- View bus location\n- Estimated arrival time\n- Route information"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Student dashboard includes a live-updating vehicle location widget and a link/button to /tracking.",
+        "Student dashboard shows an ETA field in English; when sufficient data is unavailable, it shows an English fallback such as “ETA not available”.",
+        "If the logged-in user profile has assignedRoute set, the Student dashboard displays the route name and stop list; otherwise, it displays an English empty-state message."
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "text": "Update the Driver dashboard to support driver operations directly from the dashboard: (1) display assigned route details (name and stops) when assignedRoute exists, (2) add Start Trip and End Trip controls with clear current trip state, (3) add GPS tracking activation controls that, when enabled, periodically reads browser geolocation (with permission handling) and sends vehicle location updates for the driver’s assigned vehicle, and (4) add a student pickup checklist view that helps the driver track recent pickup/drop-off records associated with the active trip/route (with navigation to the full Pickup & Drop-off screen for full management).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Driver Dashboard:\n- View assigned route\n- Start and end trip button\n- GPS tracking activation\n- Student pickup checklist"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Driver dashboard shows assigned route name and stops when assignedRoute is present; otherwise shows an English empty-state.",
+        "Driver dashboard includes Start Trip and End Trip buttons; Start Trip is disabled when an active trip is already running for the driver’s assigned vehicle, and End Trip is disabled when there is no active trip.",
+        "When GPS tracking is enabled, the app requests browser location permission (if needed) and periodically calls the backend vehicle location update for the driver’s assigned vehicle; when disabled, periodic updates stop.",
+        "If the driver has no assigned vehicle, the dashboard shows an English message explaining that GPS tracking and trip controls require an assigned vehicle.",
+        "Driver dashboard shows a pickup checklist panel that lists recent pickup/drop-off records relevant to the current trip context when available, and includes a link/button to /pickup-dropoff for full editing."
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "text": "Extend the backend to support driver-initiated trip lifecycle actions needed by the Driver dashboard: provide authenticated, driver-authorized operations to start a trip for the caller’s assigned vehicle/route and to end the active trip, ensuring proper role checks and that drivers can only operate on their assigned vehicle (admins retain full control).",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Driver Dashboard:\n- Start and end trip button"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes shared methods that allow a driver (or admin) to start a trip for the driver’s assigned vehicle/route without requiring admin-only createTrip.",
+        "Backend exposes a shared method that allows a driver (or admin) to end/complete the active trip for that vehicle.",
+        "Driver authorization is enforced so a driver cannot start/end trips for a vehicle other than their assignedVehicle.",
+        "Trip records created/updated by these methods update lastUpdated appropriately and are visible via existing trip query methods."
+      ]
+    },
+    {
+      "id": "REQ-19",
+      "text": "Update the Admin dashboard to include an “Active Trips” monitoring panel that highlights currently active/non-completed trips and quick navigation into the full Trips view. Additionally, implement a user management view suitable for administrators to manage users (parents, drivers, students) beyond role assignment by Principal ID, including a list/search of known user profiles and convenient links/actions to existing role assignment and driver assignment tools.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Admin Dashboard:\n- Manage users (parents, drivers, students)\n- Manage routes\n- Assign drivers to routes\n- Monitor active trips"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin dashboard shows an Active Trips panel that lists at least the most recent non-completed trips (e.g., statuses other than Completed) and provides a link/button to /trips.",
+        "Admin dashboard provides a clear navigation entry to a new or updated admin user management screen that lists known user profiles.",
+        "Admin user management screen supports searching/filtering the listed users by name and/or Principal text and shows role plus assignment fields (assignedVehicle/assignedRoute) when present.",
+        "From the admin user management screen, an admin can navigate to existing role management (/admin/roles) and driver assignment (/admin/drivers) flows to modify a selected user."
+      ]
+    },
+    {
+      "id": "REQ-20",
+      "text": "Add backend support for administrator user management listing by exposing an admin-only query that returns all stored user profiles (or a paginated subset if required), for use by the admin user management screen.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Admin Dashboard:\n- Manage users (parents, drivers, students)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend provides an admin-only query method to list stored user profiles.",
+        "Non-admin callers receive an unauthorized error when attempting to list user profiles.",
+        "Frontend admin user management screen uses this backend method to populate the user list."
+      ]
+    }
+  ],
+  "constraints": [
+    "Use English for all user-facing text added or modified in these dashboard expansions.",
+    "Do not edit any files under frontend/src/components/ui (Shadcn UI components must be composed, not modified).",
+    "Do not modify any files listed in frontend.immutablePaths (including frontend/src/hooks/useInternetIdentity.ts/tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx).",
+    "Backend must remain a single Motoko actor in backend/main.mo; only add backend/migration.mo if a state upgrade is required."
+  ],
+  "nonGoals": [
+    "Implementing push notifications or OS-level notifications (only in-app alerts are in scope).",
+    "Adding third-party authentication providers (Internet Identity only).",
+    "Adding external databases or non-Internet-Computer backend services.",
+    "Building a full turn-by-turn routing or high-precision ETA algorithm; ETA must be a best-effort display with clear English fallbacks when unavailable."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-14T03:19:32.626Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 6,
+    "implemented": 4,
+    "items": [
+      {
+        "id": "REQ-15",
+        "summary": "Update the Parent dashboard to include embedded, at-a-glance widgets (not just navigation cards): (1) a compact live vehicle location view with a clear link to the full Tracking screen, (2) a notifications preview showing the most recent alerts for the parent’s assigned route/vehicle (when available) with a link to the full Alerts screen, (3) a pickup/drop-off status preview showing the most recent pickup/drop-off records relevant to the logged-in parent context (fallback: show the latest records available to the caller) with a link to the Pickup & Drop-off screen, and (4) an assigned route summary that shows the assigned route name/stops when the profile has an assignedRoute.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/dashboards/ParentDashboard.tsx",
+          "frontend/src/components/dashboard/VehicleLocationWidget.tsx",
+          "frontend/src/components/dashboard/AlertsPreviewWidget.tsx",
+          "frontend/src/components/dashboard/PickupDropoffPreviewWidget.tsx",
+          "frontend/src/components/dashboard/AssignedRouteSummaryWidget.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/dashboards/ParentDashboard.tsx",
+          "frontend/src/components/dashboard/VehicleLocationWidget.tsx",
+          "frontend/src/components/dashboard/AlertsPreviewWidget.tsx",
+          "frontend/src/components/dashboard/PickupDropoffPreviewWidget.tsx",
+          "frontend/src/components/dashboard/AssignedRouteSummaryWidget.tsx"
+        ]
+      },
+      {
+        "id": "REQ-16",
+        "summary": "Update the Student dashboard to include embedded widgets for (1) live vehicle location, (2) estimated arrival time (ETA) summary, and (3) assigned route summary. The ETA must be displayed in English and must gracefully handle missing data (e.g., show “ETA not available” when it cannot be computed from available trip/vehicle updates).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/dashboards/StudentDashboard.tsx",
+          "frontend/src/components/dashboard/EtaSummaryWidget.tsx",
+          "frontend/src/utils/eta.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/dashboards/StudentDashboard.tsx",
+          "frontend/src/components/dashboard/EtaSummaryWidget.tsx",
+          "frontend/src/utils/eta.ts"
+        ]
+      },
+      {
+        "id": "REQ-17",
+        "summary": "Update the Driver dashboard to support driver operations directly from the dashboard: (1) display assigned route details (name and stops) when assignedRoute exists, (2) add Start Trip and End Trip controls with clear current trip state, (3) add GPS tracking activation controls that, when enabled, periodically reads browser geolocation (with permission handling) and sends vehicle location updates for the driver’s assigned vehicle, and (4) add a student pickup checklist view that helps the driver track recent pickup/drop-off records associated with the active trip/route (with navigation to the full Pickup & Drop-off screen for full management).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/dashboards/DriverDashboard.tsx",
+          "frontend/src/hooks/queries/useTrips.ts",
+          "frontend/src/services/tripService.ts",
+          "frontend/src/hooks/useGpsVehicleTracking.ts",
+          "frontend/src/components/dashboard/DriverTripControls.tsx",
+          "frontend/src/components/dashboard/GpsTrackingControls.tsx",
+          "frontend/src/components/dashboard/PickupChecklistPanel.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/dashboards/DriverDashboard.tsx",
+          "frontend/src/hooks/queries/useTrips.ts",
+          "frontend/src/services/tripService.ts",
+          "frontend/src/hooks/useGpsVehicleTracking.ts",
+          "frontend/src/components/dashboard/DriverTripControls.tsx",
+          "frontend/src/components/dashboard/GpsTrackingControls.tsx",
+          "frontend/src/components/dashboard/PickupChecklistPanel.tsx"
+        ]
+      },
+      {
+        "id": "REQ-18",
+        "summary": "Extend the backend to support driver-initiated trip lifecycle actions needed by the Driver dashboard: provide authenticated, driver-authorized operations to start a trip for the caller’s assigned vehicle/route and to end the active trip, ensuring proper role checks and that drivers can only operate on their assigned vehicle (admins retain full control).",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-19",
+        "summary": "Update the Admin dashboard to include an “Active Trips” monitoring panel that highlights currently active/non-completed trips and quick navigation into the full Trips view. Additionally, implement a user management view suitable for administrators to manage users (parents, drivers, students) beyond role assignment by Principal ID, including a list/search of known user profiles and convenient links/actions to existing role assignment and driver assignment tools.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/dashboards/AdminDashboard.tsx",
+          "frontend/src/pages/admin/AdminUserManagementPage.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/navigation/RoleNav.tsx",
+          "frontend/src/hooks/queries/queryKeys.ts",
+          "frontend/src/services/userService.ts",
+          "frontend/src/hooks/queries/useUserProfiles.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/dashboards/AdminDashboard.tsx",
+          "frontend/src/pages/admin/AdminUserManagementPage.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/navigation/RoleNav.tsx",
+          "frontend/src/hooks/queries/queryKeys.ts",
+          "frontend/src/services/userService.ts",
+          "frontend/src/hooks/queries/useUserProfiles.ts"
+        ]
+      },
+      {
+        "id": "REQ-20",
+        "summary": "Add backend support for administrator user management listing by exposing an admin-only query that returns all stored user profiles (or a paginated subset if required), for use by the admin user management screen.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "build-request.json",
+    "build-template/README.md",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/dashboard/ActiveTripsPanel.tsx",
+    "frontend/src/components/dashboard/AlertsPreviewWidget.tsx",
+    "frontend/src/components/dashboard/AssignedRouteSummaryWidget.tsx",
+    "frontend/src/components/dashboard/DriverTripControls.tsx",
+    "frontend/src/components/dashboard/EtaSummaryWidget.tsx",
+    "frontend/src/components/dashboard/GpsTrackingControls.tsx",
+    "frontend/src/components/dashboard/PickupChecklistPanel.tsx",
+    "frontend/src/components/dashboard/PickupDropoffPreviewWidget.tsx",
+    "frontend/src/components/dashboard/VehicleLocationWidget.tsx",
+    "frontend/src/components/navigation/RoleNav.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/queries/queryKeys.ts",
+    "frontend/src/hooks/queries/useTrips.ts",
+    "frontend/src/hooks/queries/useUserProfiles.ts",
+    "frontend/src/hooks/useGpsVehicleTracking.ts",
+    "frontend/src/pages/admin/AdminUserManagementPage.tsx",
+    "frontend/src/pages/dashboards/AdminDashboard.tsx",
+    "frontend/src/pages/dashboards/DriverDashboard.tsx",
+    "frontend/src/pages/dashboards/ParentDashboard.tsx",
+    "frontend/src/pages/dashboards/StudentDashboard.tsx",
+    "frontend/src/services/tripService.ts",
+    "frontend/src/services/userService.ts",
+    "frontend/src/utils/eta.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

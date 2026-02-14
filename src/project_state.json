@@ -1,0 +1,265 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Build a Flutter mobile app named \"Traeme\" for school transportation (Politécnico Reverendo Andrés Amengual Fe y Alegría, Jima Arriba, La Vega, Dominican Republic) with role-based experiences for Parents, Students, Drivers, and Administrators; includes real-time bus tracking, routing, notifications, trip/pickup status, and Firebase-ready backend.",
+  "architectural_notes": [
+    "Use Flutter with a role-based navigation structure (Parents/Students/Drivers/Admins) and shared app theme (primary colors + Lobster font for branding).",
+    "Design branding assets so the app logo is loaded from replaceable image assets and can be shown on splash, login, and home AppBar.",
+    "Architect the data/services layer to be Firebase-ready (Auth, Firestore, FCM), keeping UI separated from backend services.",
+    "Real-time tracking should use device GPS + Google Maps SDK to render bus location updates."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-implement-secure-sign-in-using-internet-identity-and-persist-a-user-profile-that-includes-role-assignment-parent-student-driver-administrator-provide-a-first-run-flow-for-administrators-to-assign-roles-to-principals-that-have-authenticated",
+      "title": "Implement secure sign-in using Internet Identity and persist a user profile that includes role assignment (Parent, Student, Driver, Administrator). Provide a first-run flow for administrators to assign roles to principals that have authenticated.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-role-based-dashboards-and-navigation-after-login-route-users-to-a-dashboard-tailored-to-their-role-parent-student-driver-administrator-with-clear-navigation-to-tracking-routes-trip-status-pickup-drop-off-driver-profile-driver-only-gallery-about-us-and-admin-tools-admin-only",
+      "title": "Create role-based dashboards and navigation: after login, route users to a dashboard tailored to their role (Parent, Student, Driver, Administrator) with clear navigation to Tracking, Routes, Trip Status, Pickup/Drop-off, Driver Profile (driver only), Gallery, About Us, and Admin tools (admin only).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-bus-tracking-ui-and-backend-data-model-represent-vehicles-with-current-location-lat-lng-lastupdated-timestamp-assigned-route-and-driver-provide-a-map-based-tracking-screen-that-visualizes-vehicle-positions-and-route-polylines-using-a-web-map-library-non-google-and-updates-positions-via-periodic-polling",
+      "title": "Implement bus tracking UI and backend data model: represent vehicles with current location (lat/lng), lastUpdated timestamp, assigned route, and driver. Provide a map-based Tracking screen that visualizes vehicle positions and route polylines using a web map library (non-Google) and updates positions via periodic polling.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-route-management-allow-administrators-to-create-view-update-and-deactivate-routes-with-a-name-stop-list-with-order-and-optional-polyline-path-points-allow-parents-students-to-view-routes-allow-drivers-to-view-their-assigned-route",
+      "title": "Implement route management: allow administrators to create, view, update, and deactivate routes with a name, stop list (with order), and optional polyline/path points; allow parents/students to view routes; allow drivers to view their assigned route.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-trip-status-updates-and-an-in-app-alerts-system-model-trips-with-statuses-e-g-scheduled-en-route-arrived-delayed-completed-and-allow-drivers-admins-to-update-statuses-provide-an-alerts-notifications-center-in-the-app-that-records-and-displays-events-such-as-bus-arrival-delays-and-route-changes-in-app-only",
+      "title": "Implement trip status updates and an in-app alerts system: model trips with statuses (e.g., Scheduled, En Route, Arrived, Delayed, Completed) and allow drivers/admins to update statuses. Provide an Alerts/Notifications center in the app that records and displays events such as bus arrival, delays, and route changes (in-app only).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-student-pickup-and-drop-off-registration-allow-recording-pickup-drop-off-events-per-student-per-trip-stop-time-status-notes-provide-role-appropriate-views-parents-students-can-view-their-records-drivers-admins-can-create-update-records",
+      "title": "Implement student pickup and drop-off registration: allow recording pickup/drop-off events per student per trip/stop (time, status, notes). Provide role-appropriate views: parents/students can view their records; drivers/admins can create/update records.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-driver-profile-and-assigned-vehicle-management-store-driver-profile-details-and-vehicle-assignment-provide-admin-tools-to-assign-a-vehicle-and-route-to-a-driver-provide-driver-ui-to-view-assigned-vehicle-route-and-update-basic-profile-fields",
+      "title": "Implement driver profile and assigned vehicle management: store driver profile details and vehicle assignment; provide admin tools to assign a vehicle and route to a driver; provide driver UI to view assigned vehicle/route and update basic profile fields.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-gallery-and-about-us-sections-with-photos-and-descriptions-gallery-should-display-a-grid-of-team-photos-about-us-should-show-photos-plus-short-bios-for-each-creator",
+      "title": "Add Gallery and About Us sections with photos and descriptions. Gallery should display a grid of team photos; About Us should show photos plus short bios for each creator.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-branding-and-logo-placement-add-a-splash-landing-screen-experience-with-the-traeme-logo-a-login-screen-with-the-logo-at-the-top-and-show-the-logo-in-the-home-screen-appbar-header-ensure-the-logo-is-loaded-from-a-replaceable-static-image-asset-path",
+      "title": "Implement branding and logo placement: add a splash/landing screen experience with the Traeme logo, a login screen with the logo at the top, and show the logo in the home screen AppBar/header. Ensure the logo is loaded from a replaceable static image asset path.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-the-provided-design-system-across-the-ui-use-primary-colors-9a031e-fb8b24-e36414-0f4c5c-consistently-use-the-lobster-font-for-the-app-name-logo-text-and-implement-a-modern-clean-user-friendly-layout-with-consistent-components-buttons-cards-forms-tables",
+      "title": "Apply the provided design system across the UI: use primary colors (#9A031E, #FB8B24, #E36414, #0F4C5C) consistently, use the Lobster font for the app name/logo text, and implement a modern, clean, user-friendly layout with consistent components (buttons, cards, forms, tables).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-define-a-coherent-visual-theme-direction-for-traeme-that-complements-the-provided-palette-avoid-blue-purple-and-apply-it-consistently-across-screens-e-g-header-style-card-style-icon-style-background-accents-without-introducing-new-product-features",
+      "title": "Define a coherent visual theme direction for Traeme that complements the provided palette (avoid blue/purple) and apply it consistently across screens (e.g., header style, card style, icon style, background accents) without introducing new product features.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-clear-data-services-layer-on-the-frontend-and-backend-endpoints-to-support-future-external-integrations-e-g-firebase-while-keeping-the-current-implementation-fully-on-the-internet-computer-abstract-auth-user-profile-routes-vehicles-trips-and-alerts-behind-service-functions-so-they-can-be-swapped-later",
+      "title": "Create a clear data/services layer on the frontend and backend endpoints to support future external integrations (e.g., Firebase), while keeping the current implementation fully on the Internet Computer. Abstract auth, user/profile, routes, vehicles, trips, and alerts behind service functions so they can be swapped later.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-generated-static-image-assets-required-for-branding-and-team-sections-store-them-under-frontend-public-assets-generated-and-render-them-in-the-appropriate-ui-locations-splash-login-header-gallery-about",
+      "title": "Add generated static image assets required for branding and team sections, store them under frontend/public/assets/generated, and render them in the appropriate UI locations (splash, login, header, gallery, about).",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-parent-dashboard-to-include-embedded-at-a-glance-widgets-not-just-navigation-cards-1-a-compact-live-vehicle-location-view-with-a-clear-link-to-the-full-tracking-screen-2-a-notifications-preview-showing-the-most-recent-alerts-for-the-parent-s-assigned-route-vehicle-when-available-with-a-link-to-the-full-alerts-screen-3-a-pickup-drop-off-status-preview-showing-the-most-recent-pickup-drop-off-records-relevant-to-the-logged-in-parent-context-fallback-show-the-latest-records-available-to-the-caller-with-a-link-to-the-pickup-drop-off-screen-and-4-an-assigned-route-summary-that-shows-the-assigned-route-name-stops-when-the-profile-has-an-assignedroute",
+      "title": "Update the Parent dashboard to include embedded, at-a-glance widgets (not just navigation cards): (1) a compact live vehicle location view with a clear link to the full Tracking screen, (2) a notifications preview showing the most recent alerts for the parent’s assigned route/vehicle (when available) with a link to the full Alerts screen, (3) a pickup/drop-off status preview showing the most recent pickup/drop-off records relevant to the logged-in parent context (fallback: show the latest records available to the caller) with a link to the Pickup & Drop-off screen, and (4) an assigned route summary that shows the assigned route name/stops when the profile has an assignedRoute.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-student-dashboard-to-include-embedded-widgets-for-1-live-vehicle-location-2-estimated-arrival-time-eta-summary-and-3-assigned-route-summary-the-eta-must-be-displayed-in-english-and-must-gracefully-handle-missing-data-e-g-show-eta-not-available-when-it-cannot-be-computed-from-available-trip-vehicle-updates",
+      "title": "Update the Student dashboard to include embedded widgets for (1) live vehicle location, (2) estimated arrival time (ETA) summary, and (3) assigned route summary. The ETA must be displayed in English and must gracefully handle missing data (e.g., show “ETA not available” when it cannot be computed from available trip/vehicle updates).",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-driver-dashboard-to-support-driver-operations-directly-from-the-dashboard-1-display-assigned-route-details-name-and-stops-when-assignedroute-exists-2-add-start-trip-and-end-trip-controls-with-clear-current-trip-state-3-add-gps-tracking-activation-controls-that-when-enabled-periodically-reads-browser-geolocation-with-permission-handling-and-sends-vehicle-location-updates-for-the-driver-s-assigned-vehicle-and-4-add-a-student-pickup-checklist-view-that-helps-the-driver-track-recent-pickup-drop-off-records-associated-with-the-active-trip-route-with-navigation-to-the-full-pickup-drop-off-screen-for-full-management",
+      "title": "Update the Driver dashboard to support driver operations directly from the dashboard: (1) display assigned route details (name and stops) when assignedRoute exists, (2) add Start Trip and End Trip controls with clear current trip state, (3) add GPS tracking activation controls that, when enabled, periodically reads browser geolocation (with permission handling) and sends vehicle location updates for the driver’s assigned vehicle, and (4) add a student pickup checklist view that helps the driver track recent pickup/drop-off records associated with the active trip/route (with navigation to the full Pickup & Drop-off screen for full management).",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-admin-dashboard-to-include-an-active-trips-monitoring-panel-that-highlights-currently-active-non-completed-trips-and-quick-navigation-into-the-full-trips-view-additionally-implement-a-user-management-view-suitable-for-administrators-to-manage-users-parents-drivers-students-beyond-role-assignment-by-principal-id-including-a-list-search-of-known-user-profiles-and-convenient-links-actions-to-existing-role-assignment-and-driver-assignment-tools",
+      "title": "Update the Admin dashboard to include an “Active Trips” monitoring panel that highlights currently active/non-completed trips and quick navigation into the full Trips view. Additionally, implement a user management view suitable for administrators to manage users (parents, drivers, students) beyond role assignment by Principal ID, including a list/search of known user profiles and convenient links/actions to existing role assignment and driver assignment tools.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Set up Flutter app project \"Traeme\" with modern clean UI, defined color palette (#9A031E, #FB8B24, #E36414, #0F4C5C) and Lobster font for app name/logo text",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Implement secure authentication with role-based access for Parents, Students, Drivers, and Administrators",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Create role-based dashboards and navigation between main screens",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Real-time school bus tracking using GPS displayed on Google Maps",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Route management features (create/view/update routes)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Push notifications and alerts (bus arrival, delays, route changes)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Trip status updates (e.g., en route, arrived, delayed, completed)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Student pickup and drop-off registration tracking",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Driver profile management and assigned vehicle details",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add Gallery section to view photos of the development team",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add About Us section with photos and short creator descriptions",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Branding screens: splash screen with logo, login screen with logo on top, and home screen AppBar logo; logo replaceable via image asset",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Prepare backend integration to be Firebase-ready (project structure, services layer, placeholders for Firebase Auth/Firestore/FCM)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-26",
+      "summary": "Enforce role-based authorization in the Motoko backend for all write operations (and sensitive reads): admins can manage all entities; drivers can update their own profile, assigned vehicle location, and trip statuses; parents/students can only read allowed data and their own pickup/drop-off records.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-27",
+      "summary": "Expand each role’s dashboard with specific capabilities: Parent (map tracking, arrival/delay notifications, pickup/drop-off status, assigned route); Driver (assigned route, start/end trip, GPS tracking toggle, student pickup checklist); Student (bus location, ETA, route info); Admin (manage users, manage routes, assign drivers to routes, monitor active trips)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-31",
+      "summary": "Extend the backend to support driver-initiated trip lifecycle actions needed by the Driver dashboard: provide authenticated, driver-authorized operations to start a trip for the caller’s assigned vehicle/route and to end the active trip, ensuring proper role checks and that drivers can only operate on their assigned vehicle (admins retain full control).",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-33",
+      "summary": "Add backend support for administrator user management listing by exposing an admin-only query that returns all stored user profiles (or a paginated subset if required), for use by the admin user management screen.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Traeme",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

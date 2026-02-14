@@ -1,0 +1,165 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Expand role dashboards with live widgets and driver trip controls (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-15",
+      "summary": "Embed live widgets in Parent dashboard for vehicle location, alerts preview, pickup/drop-off preview, and assigned route summary with deep links.",
+      "acceptanceCriteria": [
+        "Parent dashboard shows a live-updating vehicle location widget (updates as vehicle locations are polled) and includes a visible link/button that navigates to /tracking.",
+        "Parent dashboard shows a list preview of the most recent alerts (at least the latest 3) and includes a link/button to /alerts.",
+        "Parent dashboard shows a pickup/drop-off preview (at least the latest 3 records accessible to the caller) and includes a link/button to /pickup-dropoff.",
+        "If the logged-in user profile has assignedRoute set, the Parent dashboard displays the route name and stop list; if not assigned, it displays an English empty-state message indicating no route is assigned."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/dashboards/ParentDashboard.tsx",
+          "operation": "modify",
+          "description": "Replace the navigation-only card grid with embedded, at-a-glance widgets: compact live vehicle location (polled), alerts preview (latest 3), pickup/drop-off preview (latest 3 relevant to parent context with fallback), and assigned route summary (name + stops or English empty-state). Include clear links/buttons to /tracking, /alerts, and /pickup-dropoff. Use the authorization component’s frontend guidance to ensure data is only shown to authenticated users and unauthorized errors are handled gracefully. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/VehicleLocationWidget.tsx",
+          "operation": "create",
+          "description": "Create a reusable compact vehicle location widget for dashboards that uses existing vehicle-location polling hooks and renders a minimal at-a-glance view with a visible link/button to /tracking. Use the authorization component’s frontend guidance for authenticated data access. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/AlertsPreviewWidget.tsx",
+          "operation": "create",
+          "description": "Create a reusable alerts preview widget that shows the most recent alerts (at least 3) for a given assignedRoute/assignedVehicle context (when available) and provides a link/button to /alerts. Use the authorization component’s frontend guidance for authenticated data access. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/PickupDropoffPreviewWidget.tsx",
+          "operation": "create",
+          "description": "Create a reusable pickup/drop-off preview widget that shows at least the latest 3 records relevant to the current parent context when possible (e.g., via assignedRoute/trip correlation) with a fallback to the latest accessible records, and includes a link/button to /pickup-dropoff. Use the authorization component’s frontend guidance for authenticated data access. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/AssignedRouteSummaryWidget.tsx",
+          "operation": "create",
+          "description": "Create a reusable assigned route summary widget that displays route name and stop list when assignedRoute exists, otherwise shows an English empty-state message indicating no route is assigned. Use the authorization component’s frontend guidance for authenticated data access. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Embed widgets in Student dashboard for live vehicle location, English ETA summary with graceful fallback, and assigned route summary.",
+      "acceptanceCriteria": [
+        "Student dashboard includes a live-updating vehicle location widget and a link/button to /tracking.",
+        "Student dashboard shows an ETA field in English; when sufficient data is unavailable, it shows an English fallback such as “ETA not available”.",
+        "If the logged-in user profile has assignedRoute set, the Student dashboard displays the route name and stop list; otherwise, it displays an English empty-state message."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/dashboards/StudentDashboard.tsx",
+          "operation": "modify",
+          "description": "Update Student dashboard UI to embed: (1) live vehicle location widget with link to /tracking, (2) ETA summary in English with a clear English fallback when missing/insufficient data, and (3) assigned route summary (name + stops or English empty-state). Use the authorization component’s frontend guidance to ensure authenticated-only data rendering. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/EtaSummaryWidget.tsx",
+          "operation": "create",
+          "description": "Create an ETA summary widget that computes a best-effort English ETA from available trip/vehicle updates and displays “ETA not available” when it cannot be computed. Use the authorization component’s frontend guidance for authenticated data access. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/eta.ts",
+          "operation": "create",
+          "description": "Add a small utility to derive a best-effort English ETA string from available trip status and vehicle update recency, returning an English fallback when insufficient data is present."
+        }
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "summary": "Enhance Driver dashboard with assigned route details, start/end trip controls with active state, GPS tracking activation that periodically sends geolocation updates, and a pickup checklist panel with link to full management.",
+      "acceptanceCriteria": [
+        "Driver dashboard shows assigned route name and stops when assignedRoute is present; otherwise shows an English empty-state.",
+        "Driver dashboard includes Start Trip and End Trip buttons; Start Trip is disabled when an active trip is already running for the driver’s assigned vehicle, and End Trip is disabled when there is no active trip.",
+        "When GPS tracking is enabled, the app requests browser location permission (if needed) and periodically calls the backend vehicle location update for the driver’s assigned vehicle; when disabled, periodic updates stop.",
+        "If the driver has no assigned vehicle, the dashboard shows an English message explaining that GPS tracking and trip controls require an assigned vehicle.",
+        "Driver dashboard shows a pickup checklist panel that lists recent pickup/drop-off records relevant to the current trip context when available, and includes a link/button to /pickup-dropoff for full editing."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/dashboards/DriverDashboard.tsx",
+          "operation": "modify",
+          "description": "Update Driver dashboard to embed assigned route details (name + stops or English empty-state), Start Trip / End Trip controls with clear active trip state and button disabled states, GPS tracking activation controls with English permission/error messaging, and a pickup checklist panel showing recent trip-relevant pickup/drop-off records with a link/button to /pickup-dropoff. Use the authorization component’s frontend guidance for authenticated-only access and for handling unauthorized errors from backend calls. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/queries/useTrips.ts",
+          "operation": "modify",
+          "description": "Add React Query mutations for driver trip lifecycle actions (start/end) and any helper query/memo patterns needed to derive the driver’s active trip state from existing trip queries, without modifying immutable auth/actor hooks. Use the authorization component’s frontend error-handling guidance for authorization failures. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/services/tripService.ts",
+          "operation": "modify",
+          "description": "Add service wrappers for driver-initiated trip lifecycle calls using existing backend interface capabilities so the Driver dashboard can start/end the active trip and refresh relevant cached queries."
+        },
+        {
+          "path": "frontend/src/hooks/useGpsVehicleTracking.ts",
+          "operation": "create",
+          "description": "Implement a frontend hook that manages GPS tracking activation: requests browser geolocation permission as needed, periodically reads geolocation, and invokes vehicle location update mutation while enabled; stops polling when disabled; surfaces English status/errors. Use the authorization component’s frontend guidance for authenticated-only data operations. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/DriverTripControls.tsx",
+          "operation": "create",
+          "description": "Create a dashboard component encapsulating Start Trip / End Trip controls, showing current trip state in English, enforcing disabled states based on active trip presence, and displaying an English message when assignedVehicle is missing. Use the authorization component’s frontend guidance for authenticated-only actions. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/GpsTrackingControls.tsx",
+          "operation": "create",
+          "description": "Create a dashboard component for enabling/disabling GPS tracking and showing English permission/disabled/error states, delegating the periodic update behavior to the GPS tracking hook. Use the authorization component’s frontend guidance for authenticated-only actions. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/PickupChecklistPanel.tsx",
+          "operation": "create",
+          "description": "Create a dashboard panel that lists recent pickup/drop-off records relevant to the active trip/route context when available (fallback to recent accessible records) and includes a link/button to /pickup-dropoff for full editing. Use the authorization component’s frontend guidance for authenticated data access. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-19",
+      "summary": "Enhance Admin dashboard with Active Trips monitoring and add an admin user management screen with list/search and links to existing role/driver assignment tools.",
+      "acceptanceCriteria": [
+        "Admin dashboard shows an Active Trips panel that lists at least the most recent non-completed trips (e.g., statuses other than Completed) and provides a link/button to /trips.",
+        "Admin dashboard provides a clear navigation entry to a new or updated admin user management screen that lists known user profiles.",
+        "Admin user management screen supports searching/filtering the listed users by name and/or Principal text and shows role plus assignment fields (assignedVehicle/assignedRoute) when present.",
+        "From the admin user management screen, an admin can navigate to existing role management (/admin/roles) and driver assignment (/admin/drivers) flows to modify a selected user."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/dashboards/AdminDashboard.tsx",
+          "operation": "modify",
+          "description": "Add an embedded “Active Trips” monitoring panel that lists recent non-completed trips and includes a clear link/button to /trips. Add a clear navigation entry (card or button) to the admin user management screen. All added/changed text must be in English. Use the authorization component’s frontend guidance to keep admin-only data behind authenticated access and to handle unauthorized errors gracefully. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminUserManagementPage.tsx",
+          "operation": "create",
+          "description": "Create an admin-only user management screen that lists known user profiles, supports searching/filtering by name and/or Principal text, displays role and assignment fields (assignedVehicle/assignedRoute) when present, and provides navigation links to /admin/roles and /admin/drivers for modifying a selected user. Use the authorization component’s frontend guidance (role-based access control UI patterns and unauthorized error handling). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register a new route for the admin user management screen (e.g., /admin/users) and wire it into the router so the Admin dashboard navigation entry works."
+        },
+        {
+          "path": "frontend/src/components/navigation/RoleNav.tsx",
+          "operation": "modify",
+          "description": "Add an admin navigation link to the new admin user management route so admins can access it from the global navigation. Use the authorization component’s frontend guidance for authenticated-only navigation. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/queries/queryKeys.ts",
+          "operation": "modify",
+          "description": "Add React Query cache keys for user profile listing used by the admin user management screen."
+        },
+        {
+          "path": "frontend/src/services/userService.ts",
+          "operation": "modify",
+          "description": "Add a service wrapper to fetch the admin user profile list from the backend interface for use by the admin user management screen."
+        },
+        {
+          "path": "frontend/src/hooks/queries/useUserProfiles.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for admin user profile listing that the admin user management screen can use, including loading/error states and cache integration. Use the authorization component’s frontend guidance to handle unauthorized errors gracefully. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}
